@@ -2,7 +2,6 @@ import paho.mqtt.client as mqtt
 from pydantic import ValidationError
 
 from sensor import SensorPayload
-import time
 
 
 class Monitoring:
@@ -44,4 +43,14 @@ class Monitoring:
         self.client.loop_stop()
         self.client.disconnect()
 
-    
+
+
+if __name__ == "__main__":
+    import time
+    monitor = Monitoring()
+    print("[Monitoring] Listening for messages. Press Ctrl+C to stop.")
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        monitor.disconnect()
