@@ -22,8 +22,12 @@ class Sensor:
         self.client = None
 
     def connect(self):
-        """Creates client and connects INSIDE child process space."""
-        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        # Compatible with both paho-mqtt 1.x and 2.x
+        if hasattr(mqtt, "CallbackAPIVersion"):
+            self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        else:
+            self.client = mqtt.Client()
+
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
 
@@ -31,7 +35,8 @@ class Sensor:
         self.client.connect(self.host_name, self.port, self.keep_alive)
         self.client.loop_start()
 
-    def on_connect(self, client, userdata, flags, rc, properties):
+    # *args absorbs optional 'properties' parameter in paho-mqtt 2.x
+    def on_connect(self, client, userdata, flags, rc, *args):
         if rc == 0:
             print(f"[{self.name}] Connected successfully to broker.")
         else:
@@ -58,7 +63,6 @@ class Sensor:
             self.client.disconnect()
 
     def run(self, topic: str, interval: float = 2.0):
-        """Main loop executed inside the child process."""
         self.connect()
         try:
             while True:

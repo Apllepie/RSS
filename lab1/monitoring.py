@@ -7,7 +7,12 @@ from sensor import SensorPayload
 class Monitoring:
 
     def __init__(self, host_name: str = "localhost", port: int = 1883, keep_alive: int = 60):
-        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        # Compatible with both paho-mqtt 1.x and 2.x
+        if hasattr(mqtt, "CallbackAPIVersion"):
+            self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        else:
+            self.client = mqtt.Client()
+
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
 
@@ -15,7 +20,7 @@ class Monitoring:
         self.client.connect(host_name, port, keep_alive)
         self.client.loop_start()
 
-    def on_connect(self, client, userdata, flags, rc, properties):
+    def on_connect(self, client, userdata, flags, rc, *args):
         if rc == 0:
             print("[Monitoring] Connected successfully to broker.")
             self.client.subscribe("#")
@@ -40,9 +45,9 @@ class Monitoring:
             print(f"[ERROR]: An error occurred: {e}")
 
     def disconnect(self):
-        self.client.loop_stop()
-        self.client.disconnect()
-
+        if self.client:
+            self.client.loop_stop()
+            self.client.disconnect()
 
 
 if __name__ == "__main__":
