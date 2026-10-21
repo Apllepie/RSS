@@ -44,14 +44,4 @@ class Monitoring:
         self.client.loop_stop()
         self.client.disconnect()
 
-    def run(self, topic: str, interval: float = 2.0):
-        """Main loop executed inside the child process."""
-        self.connect()
-        try:
-            while True:
-                self.send(topic)
-                time.sleep(interval)
-        except KeyboardInterrupt:
-            pass
-        finally:
-            self.disconnect()
+    
