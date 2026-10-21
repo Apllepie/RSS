@@ -1,21 +1,17 @@
-
-from monitoring_unit import monitoring
 import time
-from monitoring_unit.monitoring import monitoring
-from sensors.temperature import temperature
-from sensors.humidity import humidity
-
-
+from monitoring import Monitoring
+from sensor import Humidity, Temperature
 
 
 def main():
-    temp1 = temperature("temp1")
-    temp2 = temperature("temp2")
+    temp1 = Temperature("temp1")
+    temp2 = Temperature("temp2")
 
-    humi1 = humidity("humi1")
-    humi2 = humidity("humi2")
+    humi1 = Humidity("humi1")
+    humi2 = Humidity("humi2")
 
-    monitoring = monitoring()
+    monitoring = Monitoring()
+
     try:
         while True:
             temp1.send("temp")
@@ -25,19 +21,14 @@ def main():
             time.sleep(1)
 
     except KeyboardInterrupt:
-        print("Publisher stopped.")
+        print("\nPublisher stopped.")
 
-        temp1.disconect()
-        humi1.disconect()
-        temp2.disconect()
-        humi2.disconect()
-        monitoring.disconect()
-        
-    time.sleep(1)
+        temp1.disconnect()
+        temp2.disconnect()
+        humi1.disconnect()
+        humi2.disconnect()
+        monitoring.disconnect()
 
 
-
-
-
-if __name__ == "__main__" :
+if __name__ == "__main__":
     main()
