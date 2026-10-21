@@ -1,6 +1,7 @@
 import multiprocessing
 import time
 from sensor import Humidity, Temperature
+from monitoring import Monitoring
 
 
 def worker(sensor_instance, topic: str, interval: float):
@@ -8,6 +9,8 @@ def worker(sensor_instance, topic: str, interval: float):
 
 
 def main():
+    #temp_subscriber = Monitoring(topic="+/temperature")
+    #humi_subscriber = Monitoring(topic="+/humidity")
     sensors = [
         (Temperature("temp1"), "sensors/temperature", 1.5),
         (Temperature("temp2"), "sensors/temperature", 2.0),
@@ -36,6 +39,8 @@ def main():
         for p in processes:
             p.terminate()
             p.join()
+        #temp_subscriber.disconnect()
+        #humi_subscriber.disconnect()
         print("[Main] All processes terminated cleanly.")
 
 
