@@ -1,0 +1,11 @@
+plik lunch
+wysywanie sygnału 1 node
+skolowanie sygnału 2 node
+rysowanie sygnały 3 node
+
+
+
+colcon build --packages-select signals --symlink-install
+source install/setup.bash
+
+ros2 run signals generator --ros-args --params-file signals/config/generator_params.yaml

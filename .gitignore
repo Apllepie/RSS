@@ -220,3 +220,20 @@ __marimo__/
 .streamlit/secrets.toml
 
 .envrc
+
+# Ignoruj foldery kompilacji colcon w dowolnym miejscu w projekcie
+**/build/
+**/build_*/
+**/install/
+**/install_*/
+**/log/
+**/log_*/
+
+# Ignoruj pliki tymczasowe Pythona
+**/__pycache__/
+**/*.pyc
+
+# Ignoruj specyficzne dla colcon pliki metadanych i środowisko wirtualne
+**/.venv/
+**/.pytest_cache/
+**/line_profiler_logs/
