@@ -9,3 +9,9 @@ colcon build --packages-select signals --symlink-install
 source install/setup.bash
 
 ros2 run signals generator --ros-args --params-file signals/config/generator_params.yaml
+
+ros2 run signals scaler --ros-args --params-file signals/config/scaler_params.yaml
+
+
+ros2 run signals visualizer
+ros2 run signals visualizer --ros-args -p topic_name:=scaled_signal_topic
